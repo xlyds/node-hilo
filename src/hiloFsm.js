@@ -49,6 +49,12 @@ module.exports = ( { sql, hilo: { maxLo = 100, maxRetryDelay = 5000, table = "db
 
 		states: {
 			uninitialized: {
+				_onEnter() {
+					if ( this.connection ) {
+						this.connection.close();
+						this.connection = null;
+					}
+				},
 				nextId() {
 					this.deferUntilTransition();
 					this.transition( "connecting" );
@@ -126,6 +132,10 @@ module.exports = ( { sql, hilo: { maxLo = 100, maxRetryDelay = 5000, table = "db
 					resolve( val );
 				} );
 			} );
+		},
+
+		stop() {
+			this.transition( "uninitialized" );
 		}
 	} );
 

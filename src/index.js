@@ -11,6 +11,9 @@ module.exports = config => {
 		},
 		nextIds( count ) {
 			return Promise.all( _.times( count, () => { return hiloFsm.nextId(); } ) );
+		},
+		stop() {
+			hiloFsm.stop();
 		}
 	};
 
